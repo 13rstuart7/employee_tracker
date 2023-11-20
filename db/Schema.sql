@@ -1,33 +1,33 @@
--- Drops the task_saver_db if it already exists --
-DROP DATABASE IF EXISTS employeeTracker_db;
+DROP DATABASE IF EXISTS employees_db;
+CREATE DATABASE employees_db;
 
--- Create the database task_saver_db and specified it for use.
-CREATE DATABASE employeeTracker_db;
+USE employees_db;
 
-USE employeeTracker_db;
-
--- Create the table tasks.
 CREATE TABLE department (
-  id int NOT NULL AUTO_INCREMENT,
-  name varchar(30) NOT NULL,
-  PRIMARY KEY (id)
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  department_name VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE role (
-    id INTEGER NOT NULL AUTO_INCREMENT,
-    title VARCHAR(30) NOT NULL,
-    salary DECIMAL NOT NULL,
-    department_id INT NOT NULL,
-    PRIMARY KEY (id)
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    department_id INT,
+    salary DECIMAL,
+    FOREIGN KEY (department_id)
+    REFERENCES department(id)
+    ON DELETE SET NULL
 );
 
 CREATE TABLE employee (
-    id INT NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL,
-    role_id INT NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    role_id INT,
     manager_id INT,
-    PRIMARY KEY (id)
-)
-
-
+    FOREIGN KEY (role_id)
+    REFERENCES role(id)
+    ON DELETE SET NULL,
+    FOREIGN KEY (manager_id)
+    REFERENCES employee(id)
+    ON DELETE SET NULL
+);
